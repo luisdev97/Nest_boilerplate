@@ -1,4 +1,3 @@
-import { LoginResponseDto } from './login.response.dto';
 import { UserEntity } from './../../../../user/src/domain/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

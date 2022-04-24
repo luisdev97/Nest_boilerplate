@@ -25,9 +25,6 @@ export class LoginService {
     }
 
     const areEqual = await comparePasswords(password, user.password);
-    console.log(password);
-    console.log(user.password);
-    console.log(areEqual);
 
     if (!areEqual) {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
@@ -36,9 +33,9 @@ export class LoginService {
     return user;
   }
 
-  async execute(params: LoginInputDto): Promise<LoginResponseDto> {
+  async execute(params: LoginInputDto): Promise<string> {
     const user = await this.findUserForLogin(params);
     const jwt = await this.jwtService.sign({ id: user.id, email: user.email });
-    return { token: jwt };
+    return jwt;
   }
 }

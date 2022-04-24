@@ -1,21 +1,20 @@
+import { swaggerConf } from './doc.configuration';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as dotenv from 'dotenv';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { SwaggerModule } from '@nestjs/swagger';
+
+/* eslint @typescript-eslint/no-var-requires: "off" */
+const cookieParser = require('cookie-parser');
+const dotenv = require('dotenv');
 
 async function bootstrap() {
   dotenv.config();
   const app = await NestFactory.create(AppModule);
   const API_PORT = process.env.API_PORT;
 
-  const config = new DocumentBuilder()
-    .setTitle('Contacts API')
-    .setDescription('A simple API to manage your contacts')
-    .setVersion('1.0')
-    .addTag('contacts')
-    .build();
+  app.use(cookieParser());
 
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, swaggerConf);
   SwaggerModule.setup('api/docs', app, document);
 
   await app.listen(API_PORT);

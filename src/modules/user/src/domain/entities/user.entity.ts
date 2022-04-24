@@ -1,5 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
+import {
+  AfterLoad,
+  BeforeInsert,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { hashSync, genSaltSync } from 'bcrypt';
 @Entity({ name: 'users' })
 export class UserEntity {
   @PrimaryGeneratedColumn()
@@ -10,4 +16,10 @@ export class UserEntity {
 
   @Column()
   password: string;
+
+  @BeforeInsert() async hashPassword() {
+    const SALT_ROUNDS = 15;
+    const salt = genSaltSync(SALT_ROUNDS);
+    this.password = hashSync(this.password, salt);
+  }
 }

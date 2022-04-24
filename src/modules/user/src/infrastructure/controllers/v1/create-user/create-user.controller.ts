@@ -5,10 +5,9 @@ import { routesV1 } from './../../../../../../../routes';
 import { SUCCESSFUL_RESPONSE } from './../../../../../../shared/infrastructure/constants/constants';
 import { ApiController } from '../../../../../../shared/infrastructure/decorators/api-controller.decorator';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Body, Get, HttpStatus, Post } from '@nestjs/common';
+import { Body, HttpStatus, Post } from '@nestjs/common';
 
 @ApiController(routesV1.version)
-//routesv1.version
 @ApiTags('Users')
 export class CreateUserController {
   constructor(private readonly service: CreateUserService) {}

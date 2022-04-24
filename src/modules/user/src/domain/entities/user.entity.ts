@@ -1,10 +1,4 @@
-import {
-  AfterLoad,
-  BeforeInsert,
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { hashSync, genSaltSync } from 'bcrypt';
 @Entity({ name: 'users' })
 export class UserEntity {

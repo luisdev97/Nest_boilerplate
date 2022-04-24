@@ -2,7 +2,10 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 
-const ENTITY_PATH = join('../', '../../*/domain/entities/*.entity.{js,ts}');
+const ENTITY_PATH = join(
+  __dirname,
+  '../**/src/domain/entities/*.entity.{js,ts}',
+);
 
 @Module({
   imports: [

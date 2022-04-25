@@ -1,12 +1,12 @@
+import { LoginResponseDto } from './../../../../application/login/login.response.dto';
 import { SUCCESSFUL_RESPONSE } from './../../../../../../shared/infrastructure/constants/constants';
 import { routesV1 } from './../../../../../../../routes';
 import { ApiTags, ApiOperation, ApiOkResponse } from '@nestjs/swagger';
-import { ApiController } from 'src/modules/shared/infrastructure/decorators/api-controller.decorator';
 import { LoginService } from './../../../../application/login/login.service';
 import { Body, HttpStatus, Post, Res } from '@nestjs/common';
 import { LoginInputDto } from './login.input.dto';
-import { LoginResponseDto } from 'src/modules/auth/src/application/login/login.response.dto';
 import { Response } from 'express';
+import { ApiController } from '../../../../../../shared/infrastructure/decorators/api-controller.decorator';
 
 @ApiController(routesV1.version)
 @ApiTags('Users')

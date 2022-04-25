@@ -6,14 +6,19 @@ import { LoginService } from './../../../src/application/login/login.service';
 import { UserEntity } from './../../../../user/src/domain/entities/user.entity';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { Repository } from 'typeorm';
-import { INVALID_CREDENTIALS_RESPONSE_FIXTURE } from './login.fixture';
+import {
+  INVALID_CREDENTIALS_RESPONSE_FIXTURE,
+  VALID_CREDENTIALS_RESPONSE_FIXTURE,
+  VALID_USER_LOGIN_INPUT_FIXTURE,
+} from './login.fixture';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 describe('CreateUserService', () => {
   let service: LoginService;
+  let jwtService: JwtService;
   let userRepositoryMock: MockType<Repository<UserEntity>>;
 
   beforeEach(async () => {
@@ -43,6 +48,7 @@ describe('CreateUserService', () => {
     }).compile();
 
     service = module.get<LoginService>(LoginService);
+    jwtService = module.get<JwtService>(JwtService);
     userRepositoryMock = module.get(getRepositoryToken(UserEntity));
   });
 
@@ -52,7 +58,7 @@ describe('CreateUserService', () => {
 
   it('should return a http exception if the user if not found', async () => {
     const params: LoginInputDto = {
-      email: 'mail@mail.com',
+      email: 'mail@gmail.com',
       password: 'password',
     };
     userRepositoryMock.findOne.mockReturnValue(undefined);
@@ -62,15 +68,24 @@ describe('CreateUserService', () => {
   });
 
   it('should return a http exception if the password of the finded user did not match with the provided password', async () => {
-    const params: LoginInputDto = {
-      email: 'mail@mail.com',
-      password: 'password',
-    };
     userRepositoryMock.findOne.mockReturnValue(
       INVALID_CREDENTIALS_RESPONSE_FIXTURE,
     );
-    expect(service.execute(params)).rejects.toThrowError(
-      new InvalidCredentialsError(),
+    expect(
+      service.execute(VALID_USER_LOGIN_INPUT_FIXTURE),
+    ).rejects.toThrowError(new InvalidCredentialsError());
+  });
+
+  it('should return the Jwt if the credentials are valid', async () => {
+    userRepositoryMock.findOne.mockReturnValue(
+      VALID_CREDENTIALS_RESPONSE_FIXTURE,
     );
+    const serviceResponse = await service.execute(
+      VALID_USER_LOGIN_INPUT_FIXTURE,
+    );
+    const jwtVerification = await jwtService.verify(serviceResponse);
+    expect(
+      jwtVerification.email === VALID_USER_LOGIN_INPUT_FIXTURE.email,
+    ).toEqual(true);
   });
 });

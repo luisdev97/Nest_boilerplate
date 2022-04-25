@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
+import { typeOrmAsyncConfig } from '../../configuration/database.conf';
 
 const ENTITY_PATH = join(
   __dirname,
@@ -8,15 +9,6 @@ const ENTITY_PATH = join(
 );
 
 @Module({
-  imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      username: 'root',
-      password: 'root',
-      database: 'test_db',
-      entities: [ENTITY_PATH],
-      synchronize: true,
-    }),
-  ],
+  imports: [TypeOrmModule.forRootAsync(typeOrmAsyncConfig)],
 })
 export class DatabaseModule {}

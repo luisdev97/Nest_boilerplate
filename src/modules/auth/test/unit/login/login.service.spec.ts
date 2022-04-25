@@ -1,3 +1,5 @@
+import { InvalidCredentialsError } from './../../../src/domain/errors/invalid-credentials.domain.error';
+import { LoginInputDto } from './../../../src/infrastructure/controllers/v1/login/login.input.dto';
 import { UserNotFoundError } from './../../../../user/src/domain/errors/user-not-found.domain.error';
 import { MockType } from './../../../../../../test/utilities/mock-factory';
 import { LoginService } from './../../../src/application/login/login.service';
@@ -7,6 +9,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { Repository } from 'typeorm';
+import { INVALID_CREDENTIALS_RESPONSE_FIXTURE } from './login.fixture';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 describe('CreateUserService', () => {
@@ -48,9 +51,26 @@ describe('CreateUserService', () => {
   });
 
   it('should return a http exception if the user if not found', async () => {
+    const params: LoginInputDto = {
+      email: 'mail@mail.com',
+      password: 'password',
+    };
     userRepositoryMock.findOne.mockReturnValue(undefined);
-    expect(
-      service.execute({ email: 'as', password: 'password' }),
-    ).rejects.toThrowError(new UserNotFoundError());
+    expect(service.execute(params)).rejects.toThrowError(
+      new UserNotFoundError(),
+    );
+  });
+
+  it('should return a http exception if the password of the finded user did not match with the provided password', async () => {
+    const params: LoginInputDto = {
+      email: 'mail@mail.com',
+      password: 'password',
+    };
+    userRepositoryMock.findOne.mockReturnValue(
+      INVALID_CREDENTIALS_RESPONSE_FIXTURE,
+    );
+    expect(service.execute(params)).rejects.toThrowError(
+      new InvalidCredentialsError(),
+    );
   });
 });

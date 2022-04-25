@@ -1,9 +1,9 @@
-import { UserNotFoundError } from './../../../../user/src/domain/errors/user-not-found.domain.error';
+import { UserNotFoundError } from '../../../../user/src/domain/errors/user-not-found.domain.error';
+import { InvalidCredentialsError } from './../../domain/errors/invalid-credentials.domain.error';
 import { UserEntity } from './../../../../user/src/domain/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LoginInputDto } from '../../infrastructure/controllers/v1/login/login.input.dto';
-import { HttpException, HttpStatus } from '@nestjs/common';
 import { compare as comparePasswords } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
@@ -27,7 +27,7 @@ export class LoginService {
     const areEqual = await comparePasswords(password, user.password);
 
     if (!areEqual) {
-      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+      throw new InvalidCredentialsError();
     }
 
     return user;

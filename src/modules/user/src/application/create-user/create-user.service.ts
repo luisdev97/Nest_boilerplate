@@ -13,10 +13,11 @@ export class CreateUserService {
   ) {}
 
   async execute(params: CreateUserInputDTO): Promise<CreateUserResponseDto> {
-    const newUser = this.userRepository.create({
-      email: params.email,
-      password: params.password,
-    });
+    if (!params.email || !params.password) {
+      throw new Error('password and email are required for user registration');
+    }
+
+    const newUser = this.userRepository.create(params);
 
     console.log(newUser);
 

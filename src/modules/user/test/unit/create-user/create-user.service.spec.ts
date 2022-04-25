@@ -8,16 +8,14 @@ import { CreateUserService } from '../../../src/application/create-user/create-u
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 describe('CreateUserService', () => {
   let service: CreateUserService;
 
   beforeEach(async () => {
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     const mockUserService = {
       create: jest.fn().mockImplementation((dto) => dto),
-      save: jest
-        .fn()
-        .mockImplementation((user) => Promise.resolve({ id: user.id })),
+      save: jest.fn().mockImplementation((user) => Promise.resolve({ id: 2 })),
     };
 
     const module: TestingModule = await Test.createTestingModule({

@@ -8,16 +8,13 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { LoginService } from './src/application/login/login.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { jwtModuleAsyncConf } from '../../configuration/jwt.conf';
+
 @Module({
   imports: [
     UserModule,
     TypeOrmModule.forFeature([UserEntity]),
-    JwtModule.register({
-      secret: 'little_secret',
-      signOptions: {
-        expiresIn: '1d',
-      },
-    }),
+    JwtModule.registerAsync(jwtModuleAsyncConf),
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
   controllers: [LoginController],

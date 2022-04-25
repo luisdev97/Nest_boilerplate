@@ -1,3 +1,4 @@
+// import { AuthGuard } from '@nestjs/passport';
 import { CreateUserResponseDto } from './../../../../application/create-user/create-user.response.dto';
 import { CreateUserService } from './../../../../application/create-user/create-user.service';
 import { CreateUserInputDTO } from './../create-user.input.dto';
@@ -13,6 +14,7 @@ export class CreateUserController {
   constructor(private readonly service: CreateUserService) {}
 
   @Post(routesV1.users.createUser)
+  // @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Create a new user.' })
   @ApiOkResponse({
     description: SUCCESSFUL_RESPONSE,

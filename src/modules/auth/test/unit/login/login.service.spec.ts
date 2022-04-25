@@ -1,19 +1,23 @@
-import { AuthModule } from './../../../auth.module';
+import { UserNotFoundError } from './../../../../user/src/domain/errors/user-not-found.domain.error';
+import { MockType } from './../../../../../../test/utilities/mock-factory';
 import { LoginService } from './../../../src/application/login/login.service';
 import { UserEntity } from './../../../../user/src/domain/entities/user.entity';
-
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { Repository } from 'typeorm';
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 describe('CreateUserService', () => {
   let service: LoginService;
+  let userRepositoryMock: MockType<Repository<UserEntity>>;
 
   beforeEach(async () => {
     const mockUserService = {
-      create: jest.fn().mockImplementation((dto) => dto),
-      save: jest.fn().mockImplementation((user) => Promise.resolve({ id: 1 })),
+      findOne: jest
+        .fn()
+        .mockImplementation((dto) => Promise.resolve(UserEntity)),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -36,9 +40,17 @@ describe('CreateUserService', () => {
     }).compile();
 
     service = module.get<LoginService>(LoginService);
+    userRepositoryMock = module.get(getRepositoryToken(UserEntity));
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('should return a http exception if the user if not found', async () => {
+    userRepositoryMock.findOne.mockReturnValue(undefined);
+    expect(
+      service.execute({ email: 'as', password: 'password' }),
+    ).rejects.toThrowError(new UserNotFoundError());
   });
 });

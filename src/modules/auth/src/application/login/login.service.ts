@@ -1,3 +1,4 @@
+import { UserNotFoundError } from './../../../../user/src/domain/errors/user-not-found.domain.error';
 import { UserEntity } from './../../../../user/src/domain/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -20,7 +21,7 @@ export class LoginService {
     const user = await this.userRepository.findOne({ where: { email } });
 
     if (!user) {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      throw new UserNotFoundError();
     }
 
     const areEqual = await comparePasswords(password, user.password);

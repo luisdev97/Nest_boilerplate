@@ -1,4 +1,4 @@
-import { CreateUserInvalidParamsError } from './../../../src/domain/errors/create-user.domain.errors';
+import { CreateUserInvalidParamsError } from './../../../src/domain/errors/create-user.domain.error';
 import {
   CREATE_USER_BAD_PARAMS_FIXTURE,
   CREATE_USER_VALID_PARAMS_FIXTURE,
@@ -8,13 +8,16 @@ import { CreateUserService } from '../../../src/application/create-user/create-u
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 describe('CreateUserService', () => {
   let service: CreateUserService;
 
   beforeEach(async () => {
     const mockUserService = {
       create: jest.fn().mockImplementation((dto) => dto),
-      save: jest.fn().mockImplementation((user) => Promise.resolve({ id: 1 })),
+      save: jest
+        .fn()
+        .mockImplementation((user) => Promise.resolve({ id: user.id })),
     };
 
     const module: TestingModule = await Test.createTestingModule({

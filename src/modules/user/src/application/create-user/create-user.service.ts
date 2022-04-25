@@ -1,4 +1,4 @@
-import { CreateUserInvalidParamsError } from './../../domain/errors/create-user.domain.errors';
+import { CreateUserInvalidParamsError } from './../../domain/errors/create-user.domain.error';
 import { CreateUserInputDTO } from './../../infrastructure/controllers/v1/create-user.input.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -19,9 +19,6 @@ export class CreateUserService {
     }
 
     const newUser = this.userRepository.create(params);
-
-    console.log(newUser);
-
     const savedUser = await this.userRepository.save(newUser);
     return { id: savedUser.id };
   }

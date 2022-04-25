@@ -1,7 +1,7 @@
 // import { AuthGuard } from '@nestjs/passport';
 import { CreateUserResponseDto } from './../../../../application/create-user/create-user.response.dto';
 import { CreateUserService } from './../../../../application/create-user/create-user.service';
-import { CreateUserInputDTO } from './../create-user.input.dto';
+import { CreateUserInputDTO } from './create-user.input.dto';
 import { routesV1 } from './../../../../../../../routes';
 import { SUCCESSFUL_RESPONSE } from './../../../../../../shared/infrastructure/constants/constants';
 import { ApiController } from '../../../../../../shared/infrastructure/decorators/api-controller.decorator';

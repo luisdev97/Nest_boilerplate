@@ -1,5 +1,5 @@
 import { CreateUserInvalidParamsError } from './../../domain/errors/create-user.domain.error';
-import { CreateUserInputDTO } from './../../infrastructure/controllers/v1/create-user.input.dto';
+import { CreateUserInputDTO } from '../../infrastructure/controllers/v1/create-user/create-user.input.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

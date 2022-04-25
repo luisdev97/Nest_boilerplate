@@ -1,4 +1,4 @@
-import { JwtStrategy } from './src/jwt.strategy';
+import { JwtStrategy } from './src/domain/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtValidationService } from './src/application/validation/jwt-validation.service';
 import { UserEntity } from './../user/src/domain/entities/user.entity';

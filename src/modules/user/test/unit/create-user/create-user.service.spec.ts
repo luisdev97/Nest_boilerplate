@@ -1,3 +1,4 @@
+import { CreateUserInvalidParamsError } from './../../../src/domain/errors/create-user.domain.errors';
 import {
   CREATE_USER_BAD_PARAMS_FIXTURE,
   CREATE_USER_VALID_PARAMS_FIXTURE,
@@ -38,5 +39,11 @@ describe('CreateUserService', () => {
       CREATE_USER_VALID_PARAMS_FIXTURE,
     );
     expect(serviceResponse).toEqual({ id: expect.any(Number) });
+  });
+
+  it('should throw an error when email or password contain invalid values', () => {
+    expect(
+      service.execute(CREATE_USER_BAD_PARAMS_FIXTURE),
+    ).rejects.toThrowError(new CreateUserInvalidParamsError());
   });
 });
